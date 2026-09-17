@@ -19,6 +19,9 @@ cc_library_shared {
         "-DUSE_CAMERA_METABUFFER_UTILS",
         "-DUSE_ION",
         "-DUSE_NATIVE_HANDLE_SOURCE",
+        // Avoid the duplicate struct sched_param exported by the vendor
+        // kernel headers and Bionic's sched.h.
+        "-D_LINUX_SCHED_TYPES_H",
     ] + select(soong_config_variable("ANDROID", "target_board_platform"), {
         "msm8998": [
             "-D_PQ_",
@@ -29,12 +32,16 @@ cc_library_shared {
         ],
         "sdm660": [
             "-D_NV21_",
-            "-D_PQ_",
             "-DLTR_SUPPORT",
             "-DMAX_H264_LEVEL_51",
         ],
         default: [],
     }),
+
+    include_dirs: [
+        "system/memory/libion/include",
+        "system/memory/libion/kernel-headers",
+    ],
 
     header_libs: [
         "display_headers",
@@ -50,6 +57,7 @@ cc_library_shared {
     shared_libs: [
         "libc2dcolorconvert",
         "libcutils",
+        "libion",
         "liblog",
         "libqdMetaData",
     ],

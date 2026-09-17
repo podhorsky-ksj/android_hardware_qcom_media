@@ -12,6 +12,9 @@ cc_library_static {
         "-Werror",
         "-D_ANDROID_",
         "-D_ANDROID_ICS_",
+        // Avoid the duplicate struct sched_param exported by the vendor
+        // kernel headers and Bionic's sched.h.
+        "-D_LINUX_SCHED_TYPES_H",
     ],
 
     header_libs: [

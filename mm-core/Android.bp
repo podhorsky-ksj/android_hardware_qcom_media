@@ -53,6 +53,7 @@ cc_library_shared {
         "-fno-inline",
         "-fno-short-enums",
         "-D_ANDROID_",
+        "-D_ANDROID_O_MR1_DIVX_CHANGES",
     ],
 
     local_include_dirs: [

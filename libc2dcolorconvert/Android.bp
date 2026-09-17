@@ -8,10 +8,13 @@ cc_library_shared {
 
     cflags: [
         "-Werror",
+        // The vendor kernel headers and Bionic both declare sched_param.
+        "-D_LINUX_SCHED_TYPES_H",
     ],
 
     header_libs: [
         "display_headers",
+        "display_intf_headers",
         "qti_kernel_headers",
     ],
 

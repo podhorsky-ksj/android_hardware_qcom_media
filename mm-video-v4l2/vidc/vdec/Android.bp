@@ -25,6 +25,10 @@ cc_library_shared {
         "-DMAX_RES_1080P_EBI",
         "-DPROCESS_EXTRADATA_IN_OUTPUT_PORT",
         "-DUSE_ION",
+        // The vendor kernel header exports struct sched_param, while Bionic's
+        // sched.h declares the same POSIX type.  This legacy OMX module only
+        // needs Bionic's declaration; suppress the duplicate vendor header.
+        "-D_LINUX_SCHED_TYPES_H",
     ] + select(soong_config_variable("ANDROID", "target_board_platform"), {
         "msm8998": [
             "-D_UBWC_",
@@ -36,6 +40,11 @@ cc_library_shared {
         ],
         default: [],
     }),
+
+    include_dirs: [
+        "system/memory/libion/include",
+        "system/memory/libion/kernel-headers",
+    ],
 
     header_libs: [
         "display_headers",
@@ -51,6 +60,7 @@ cc_library_shared {
 
     shared_libs: [
         "libcutils",
+        "libion",
         "liblog",
         "libqdMetaData",
         "libqdutils",
